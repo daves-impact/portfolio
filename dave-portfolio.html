@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dave — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Fraunces:opsz,wght@9..144,300;9..144,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0a; --surface: #111111; --surface2: #181818;
+    --accent: #b8ff57; --accent2: #ff5c5c;
+    --text: #f0ede6; --muted: #6b6b6b; --border: rgba(255,255,255,0.07);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.6; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    padding: 8rem 2.5rem 4rem; gap: 4rem; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(184,255,87,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; }
+  .hero-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+  .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+  .hero-title .line-accent { color: var(--accent); font-style: italic; font-family: 'Fraunces', serif; font-weight: 300; }
+  .hero-bio { color: var(--muted); font-size: 13px; line-height: 1.8; max-width: 420px; margin-bottom: 2.5rem; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { padding: 0.8rem 1.6rem; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: #0a0a0a; }
+  .btn-primary:hover { background: #d4ff7a; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  .hero-visual { position: relative; height: 480px; }
+  .stat-card { position: absolute; background: var(--surface); border: 1px solid var(--border); padding: 1.25rem 1.5rem; }
+  .stat-card.top-right { top: 0; right: 0; width: 200px; }
+  .stat-card.mid-left { top: 50%; left: -20px; transform: translateY(-50%); width: 180px; }
+  .stat-card.bottom-center { bottom: 30px; left: 50%; transform: translateX(-50%); width: 230px; }
+  .stat-card .stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .stat-card .stat-value { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--text); }
+  .stat-card .stat-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .stat-card.accent-card { border-color: rgba(184,255,87,0.3); }
+  .stat-card.accent-card .stat-value { color: var(--accent); }
+  .big-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 10rem; color: rgba(255,255,255,0.025); letter-spacing: -0.05em; pointer-events: none; user-select: none; white-space: nowrap; }
+
+  .marquee-wrap { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 0; background: var(--surface); }
+  .marquee-track { display: flex; gap: 3rem; animation: marquee 22s linear infinite; white-space: nowrap; width: max-content; }
+  .marquee-item { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 1rem; }
+  .marquee-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  section { padding: 6rem 2.5rem; }
+  .section-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .section-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 3.5vw, 3rem); letter-spacing: -0.03em; margin-bottom: 3rem; line-height: 1.1; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--muted); font-size: 13px; line-height: 1.9; margin-bottom: 1rem; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2rem; }
+  .tag { padding: 6px 14px; border: 1px solid var(--border); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+  .tag.highlight { border-color: rgba(184,255,87,0.3); color: var(--accent); }
+  .tag.badge { border-color: rgba(255,92,92,0.35); color: #ff8f8f; }
+
+  .about-stack { display: flex; flex-direction: column; gap: 1rem; }
+  .stack-group-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem; margin-bottom: 0.25rem; }
+  .stack-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.25rem; background: var(--surface); border: 1px solid var(--border); }
+  .stack-item .name { font-size: 13px; color: var(--text); }
+  .stack-item .level { font-size: 11px; color: var(--muted); }
+  .stack-bar-wrap { margin-top: 5px; height: 2px; background: var(--surface2); }
+  .stack-bar { height: 2px; background: var(--accent); }
+
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .project-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s; cursor: pointer; }
+  .project-card:hover { border-color: rgba(184,255,87,0.25); }
+  .project-card.featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-card.secondary::before { background: #6eb5ff; }
+  .project-index { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .project-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .project-name span { color: var(--accent); }
+  .project-name .blue { color: #6eb5ff; }
+  .project-desc { color: var(--muted); font-size: 12px; line-height: 1.7; margin-bottom: 1.25rem; }
+  .project-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .project-tag { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--border); color: var(--muted); }
+  .project-tag.live { border-color: rgba(184,255,87,0.3); color: var(--accent); }
+  .project-tag.ship { border-color: rgba(110,181,255,0.3); color: #6eb5ff; }
+  .project-tag.misc { border-color: rgba(255,255,255,0.1); color: var(--muted); font-style: italic; }
+
+  .project-visual { height: 180px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .kairo-badge { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem; color: var(--accent); letter-spacing: -0.04em; }
+  .metacal-badge { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2rem; color: #6eb5ff; letter-spacing: -0.02em; }
+  .project-visual .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(184,255,87,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(184,255,87,0.05) 1px, transparent 1px); background-size: 24px 24px; }
+  .project-visual .grid-bg-blue { position: absolute; inset: 0; background-image: linear-gradient(rgba(110,181,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(110,181,255,0.05) 1px, transparent 1px); background-size: 24px 24px; }
+  .misc-builds { grid-column: 1 / -1; }
+  .misc-inner { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+  .misc-chip { padding: 8px 14px; border: 1px solid var(--border); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
+  .exp-list { display: flex; flex-direction: column; border-left: 1px solid var(--border); padding-left: 2rem; }
+  .exp-item { padding-bottom: 2.5rem; position: relative; }
+  .exp-item::before { content: ''; position: absolute; left: -2.5rem; top: 4px; width: 8px; height: 8px; border: 1px solid var(--accent); background: var(--bg); transform: rotate(45deg); }
+  .exp-period { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 4px; }
+  .exp-role { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; margin-bottom: 2px; }
+  .exp-company { font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+  .exp-company.blue { color: #6eb5ff; }
+  .exp-desc { font-size: 12px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+  .exp-badge { display: inline-block; margin-top: 8px; padding: 4px 10px; border: 1px solid rgba(255,92,92,0.3); color: #ff8f8f; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-left .big-cta { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(2rem, 3.5vw, 3.5rem); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 2rem; }
+  .contact-left .big-cta em { color: var(--accent); font-style: italic; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); text-decoration: none; color: var(--text); transition: border-color 0.2s; }
+  .contact-link:hover { border-color: var(--muted); }
+  .contact-link .link-name { font-size: 13px; }
+  .contact-link .link-handle { font-size: 11px; color: var(--muted); }
+  .contact-link .arrow { color: var(--accent); }
+
+  footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  footer .copy { font-size: 11px; color: var(--muted); }
+  footer .status { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  footer .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s, width 0.2s, height 0.2s; mix-blend-mode: difference; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <div class="nav-logo">Dave.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">XP</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <div class="hero-label">Available for opportunities</div>
+    <h1 class="hero-title">
+      I build things<br>
+      that <span class="line-accent">actually</span><br>
+      ship.
+    </h1>
+    <p class="hero-bio">
+      Software engineering student, frontend developer, and product builder based in Nigeria.
+      I bridge code and strategy, from shipping polished UIs to owning full product cycles.
+      Currently building Kair0, an AI market intelligence tool for forex traders.
+    </p>
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary">See my work →</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="big-number">01</div>
+    <div class="stat-card top-right accent-card reveal reveal-delay-1">
+      <div class="stat-label">Current build</div>
+      <div class="stat-value">Kair0</div>
+      <div class="stat-sub">AI · Forex Intelligence</div>
+    </div>
+    <div class="stat-card mid-left reveal reveal-delay-2">
+      <div class="stat-label">Stack</div>
+      <div class="stat-value" style="font-size:0.9rem; line-height:1.7; color:var(--muted);">Next.js · React Native<br>Firebase · Supabase<br>HTML/CSS · Git</div>
+    </div>
+    <div class="stat-card bottom-center reveal reveal-delay-3">
+      <div class="stat-label">Focus areas</div>
+      <div class="stat-value" style="font-size:0.85rem; line-height:1.7; color:var(--muted);">Frontend Dev · PM<br>Product Strategy</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="dot"></span> Frontend Development</span>
+    <span class="marquee-item"><span class="dot"></span> React Native</span>
+    <span class="marquee-item"><span class="dot"></span> Next.js</span>
+    <span class="marquee-item"><span class="dot"></span> Product Management</span>
+    <span class="marquee-item"><span class="dot"></span> Firebase</span>
+    <span class="marquee-item"><span class="dot"></span> Supabase</span>
+    <span class="marquee-item"><span class="dot"></span> Technical Writing</span>
+    <span class="marquee-item"><span class="dot"></span> Building in Public</span>
+    <span class="marquee-item"><span class="dot"></span> PMI Certified</span>
+    <span class="marquee-item"><span class="dot"></span> JavaScript</span>
+    <span class="marquee-item"><span class="dot"></span> Frontend Development</span>
+    <span class="marquee-item"><span class="dot"></span> React Native</span>
+    <span class="marquee-item"><span class="dot"></span> Next.js</span>
+    <span class="marquee-item"><span class="dot"></span> Product Management</span>
+    <span class="marquee-item"><span class="dot"></span> Firebase</span>
+    <span class="marquee-item"><span class="dot"></span> Supabase</span>
+    <span class="marquee-item"><span class="dot"></span> Technical Writing</span>
+    <span class="marquee-item"><span class="dot"></span> Building in Public</span>
+    <span class="marquee-item"><span class="dot"></span> PMI Certified</span>
+    <span class="marquee-item"><span class="dot"></span> JavaScript</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">About</div>
+      <h2 class="section-title">Dev.<br>PM.<br>Builder.</h2>
+      <p>I'm Dave a final-year Software Engineering student at Babcock University, Nigeria. I sit at the intersection of <strong>engineering, product thinking, and execution</strong>.</p>
+      <p>On the technical side: frontend development with Next.js and React Native, backends with Firebase and Supabase. On the strategy side: product management, technical documentation, and shipping ideas from zero to real users.</p>
+      <div class="about-tags">
+        <span class="tag highlight">Frontend Dev</span>
+        <span class="tag highlight">Product Builder</span>
+        <span class="tag highlight">Project Management</span>
+        <span class="tag badge">PMI Certified</span>
+        <span class="tag">Technical Writing</span>
+      </div>
+    </div>
+    <div class="about-stack reveal reveal-delay-1">
+      <div class="stack-group-label">Frontend</div>
+      <div class="stack-item">
+        <div><div class="name">Next.js / React</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:88%"></div></div></div>
+        <div class="level">Strong</div>
+      </div>
+      <div class="stack-item">
+        <div><div class="name">React Native</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:75%"></div></div></div>
+        <div class="level">Solid</div>
+      </div>
+      <div class="stack-item">
+        <div><div class="name">HTML & CSS</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:92%"></div></div></div>
+        <div class="level">Strong</div>
+      </div>
+      <div class="stack-group-label" style="margin-top:0.75rem;">Backend / Infra</div>
+      <div class="stack-item">
+        <div><div class="name">Firebase</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:72%"></div></div></div>
+        <div class="level">Solid</div>
+      </div>
+      <div class="stack-item">
+        <div><div class="name">Supabase</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:68%"></div></div></div>
+        <div class="level">Growing</div>
+      </div>
+      <div class="stack-group-label" style="margin-top:0.75rem;">Strategy & Communication</div>
+      <div class="stack-item">
+        <div><div class="name">Product Management</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:78%"></div></div></div>
+        <div class="level">PMI Badge</div>
+      </div>
+      <div class="stack-item">
+        <div><div class="name">Technical Writing</div><div class="stack-bar-wrap"><div class="stack-bar" style="width:80%"></div></div></div>
+        <div class="level">Practiced</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-label reveal">Work</div>
+  <h2 class="section-title reveal">Selected projects.</h2>
+  <div class="projects-grid">
+
+
+ <div class="project-card featured reveal">
+      <div>
+        <div class="project-index">01 · Featured</div>
+        <div class="project-name">kair<span>0</span></div>
+        <p class="project-desc">AI-powered market intelligence for retail forex traders. Delivers structured news-triggered bias reports market direction, bias, expected timeframe via X and Telegram. Built end-to-end: brand identity, product architecture, landing page, and audience distribution strategy.</p>
+        <div class="project-meta">
+          <span class="project-tag live">In Progress</span>
+          <span class="project-tag">AI</span>
+          <span class="project-tag">Forex</span>
+          <span class="project-tag">Next.js</span>
+          <span class="project-tag">X · Telegram</span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="grid-bg"></div>
+        <div class="kairo-badge">k0</div>
+      </div>
+<a href="https://kair0.vercel.app/" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem;">Visit kair0 →</a>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-index">02 · Mobile App</div>
+      <div class="project-name">Meta<span>Cal</span></div>
+      <p class="project-desc">Mobile calorie and nutrition tracker. Users log meals manually or via AI-assisted image recognition. Calculates personalised calorie targets, tracks progress visually, and includes a database of local African foods making it actually relevant for users in the region.</p>
+      <div class="project-meta">
+        <span class="project-tag">React Native</span>
+        <span class="project-tag">Firebase</span>
+        <span class="project-tag">AI Vision</span>
+        <span class="project-tag">Mobile</span>
+      </div>
+
+<a href="YOUR_METACAL_LINK_HERE" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem;">View MetaCal →</a>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2" style="border-color: rgba(110,181,255,0.08);">
+      <div class="project-index">02b · Visual</div>
+      <div class="project-visual" style="height: 140px; margin-bottom: 1.25rem;">
+        <div class="grid-bg-blue"></div>
+        <div class="metacal-badge">MetaCal</div>
+      </div>
+      <p class="project-desc" style="font-size:11px; color:var(--muted);">The African food database angle is the product's core differentiator — no generic Western calorie app gets this right.</p>
+      <div class="project-meta">
+        <span class="project-tag ship">React Native</span>
+        <span class="project-tag ship">Supabase</span>
+      </div>
+    </div>
+
+    <div class="project-card misc-builds reveal reveal-delay-3" style="grid-column: 1 / -1;">
+      <div class="project-index">03 · Misc Builds</div>
+      <div class="project-name" style="font-size:1rem; color:var(--muted); font-family:'DM Mono', monospace; font-weight:400;">Exploratory projects — HTML, CSS & JS</div>
+      <div class="misc-inner">
+        <span class="misc-chip">Weather App</span>
+        <span class="misc-chip">Movie & Anime Searcher</span>
+        <span class="misc-chip">Crypto Price Tracker</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label reveal">Experience</div>
+  <h2 class="section-title reveal">Where I've been.</h2>
+  <div class="exp-list">
+    <div class="exp-item reveal">
+      <div class="exp-period">2025 — Present</div>
+      <div class="exp-role">Founder & Product Builder</div>
+      <div class="exp-company">Kair0 — AI Market Intelligence</div>
+      <div class="exp-desc">Full ownership of a product from zero: brand identity, architecture, frontend, landing page, and growth strategy. Building in public on X to validate and grow the user base before monetisation.</div>
+    </div>
+    <div class="exp-item reveal reveal-delay-1">
+      <div class="exp-period">Jan 2025 - June 2025</div>
+      <div class="exp-role">Frontend Developer & Technical Writer</div>
+      <div class="exp-company">390 Technologies</div>
+      <div class="exp-desc">Shipped production UI components with Next.js, JavaScript, and Git. Also produced technical documentation and product documentation for internal and external audiences — a less common combo that sharpens both how you build and how you communicate what you build.</div>
+      <span class="exp-badge">PMI Project Management Badge</span>
+    </div>
+    <div class="exp-item reveal reveal-delay-2">
+      <div class="exp-period">2022 — Present</div>
+      <div class="exp-role">Software Engineering Student</div>
+      <div class="exp-company">Babcock University, Nigeria</div>
+      <div class="exp-desc">Final year (400 Level). Coursework across embedded systems, real-time systems, and software architecture. Running a product independently alongside academic work.</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <div class="section-label">Contact</div>
+      <div class="big-cta">
+        Let's build something<br><em>worth shipping.</em>
+      </div>
+      <a href="mailto:timilehind5@gmail.com" class="btn btn-primary">Send a message →</a>
+    </div>
+    <div class="contact-links reveal reveal-delay-1">
+      <a href="https://x.com/dvx_him" class="contact-link">
+        <span class="link-name">X / Twitter</span>
+        <span class="link-handle">@dvx_him</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://github.com/daves-impact" class="contact-link">
+        <span class="link-name">GitHub</span>
+        <span class="link-handle">github.com/daves_impact</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/in/david-oladipo-4a6862288?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="contact-link">
+        <span class="link-name">LinkedIn</span>
+        <span class="link-handle">linkedin.com/in/david-oladipo</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="copy">© 2026 Oladipo David Oluwajomiloju</span>
+  <span class="status"><span class="status-dot"></span> Open to opportunities</span>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mouseenter', () => { cursor.style.width = '40px'; cursor.style.height = '40px'; });
+    card.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; });
+  });
+</script>
+</body>
+</html>
