@@ -117,6 +117,74 @@
   .misc-inner { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
   .misc-chip { padding: 8px 14px; border: 1px solid var(--border); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
 
+  /* ── WRITING SECTION ── */
+  .writing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .writing-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.75rem; position: relative; overflow: hidden;
+    transition: border-color 0.3s; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .writing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .writing-card:hover { border-color: rgba(184,255,87,0.2); }
+  .writing-card:hover::before { transform: scaleX(1); }
+  .writing-type { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .writing-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; margin-bottom: 0.6rem; line-height: 1.3; }
+  .writing-excerpt { font-size: 11px; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; flex-grow: 1; }
+  .writing-footer { display: flex; justify-content: space-between; align-items: center; }
+  .writing-source { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
+  .writing-read-btn {
+    font-size: 11px; color: var(--accent); background: none; border: 1px solid rgba(184,255,87,0.25);
+    padding: 5px 12px; cursor: pointer; font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s;
+  }
+  .writing-read-btn:hover { background: rgba(184,255,87,0.08); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    max-width: 720px; width: 100%; max-height: 85vh;
+    overflow-y: auto; position: relative;
+    transform: translateY(20px); transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-header {
+    padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    position: sticky; top: 0; background: var(--surface); z-index: 2;
+  }
+  .modal-header-left .modal-type { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .modal-header-left .modal-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; }
+  .modal-close {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    width: 32px; height: 32px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s; flex-shrink: 0;
+  }
+  .modal-close:hover { border-color: var(--muted); color: var(--text); }
+  .modal-body { padding: 2rem; }
+  .modal-body h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin: 1.75rem 0 0.6rem; color: var(--text); }
+  .modal-body h3:first-child { margin-top: 0; }
+  .modal-body p { font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 0.75rem; }
+  .modal-body ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .modal-body ul li { font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 0.25rem; }
+  .modal-body ul li strong { color: var(--text); font-weight: 500; }
+  .modal-body ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .modal-body ol li { font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 0.25rem; }
+  .modal-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .modal-toc { background: var(--surface2); border: 1px solid var(--border); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+  .modal-toc p { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .modal-toc ol { padding-left: 1.25rem; }
+  .modal-toc ol li { font-size: 11px; color: var(--muted); line-height: 1.8; }
+  .modal-note { font-size: 11px; color: var(--muted); font-style: italic; border-left: 2px solid rgba(184,255,87,0.3); padding-left: 0.75rem; margin-bottom: 1rem; }
+
   .exp-list { display: flex; flex-direction: column; border-left: 1px solid var(--border); padding-left: 2rem; }
   .exp-item { padding-bottom: 2.5rem; position: relative; }
   .exp-item::before { content: ''; position: absolute; left: -2.5rem; top: 4px; width: 8px; height: 8px; border: 1px solid var(--accent); background: var(--bg); transform: rotate(45deg); }
@@ -148,7 +216,6 @@
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
-
   .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s, width 0.2s, height 0.2s; mix-blend-mode: difference; }
 </style>
 </head>
@@ -156,16 +223,32 @@
 
 <div class="cursor" id="cursor"></div>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-type" id="modalType"></div>
+        <div class="modal-title" id="modalTitle"></div>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-logo">Dave.</div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
+    <li><a href="#writing">Writing</a></li>
     <li><a href="#experience">XP</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-left">
     <div class="hero-label">Available for opportunities</div>
@@ -177,19 +260,18 @@
     <p class="hero-bio">
       Software engineering student, frontend developer, and product builder based in Nigeria.
       I bridge code and strategy, from shipping polished UIs to owning full product cycles.
-      Currently building Kair0, an AI market intelligence tool for forex traders.
+      Currently building kair0, an AI market intelligence tool for forex traders.
     </p>
     <div class="hero-cta">
       <a href="#work" class="btn btn-primary">See my work →</a>
       <a href="#contact" class="btn btn-ghost">Get in touch</a>
     </div>
   </div>
-
   <div class="hero-visual">
     <div class="big-number">01</div>
     <div class="stat-card top-right accent-card reveal reveal-delay-1">
       <div class="stat-label">Current build</div>
-      <div class="stat-value">Kair0</div>
+      <div class="stat-value">kair0</div>
       <div class="stat-sub">AI · Forex Intelligence</div>
     </div>
     <div class="stat-card mid-left reveal reveal-delay-2">
@@ -203,6 +285,7 @@
   </div>
 </section>
 
+<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span class="marquee-item"><span class="dot"></span> Frontend Development</span>
@@ -228,12 +311,13 @@
   </div>
 </div>
 
+<!-- ABOUT -->
 <section id="about">
   <div class="about-grid">
     <div class="about-text reveal">
       <div class="section-label">About</div>
       <h2 class="section-title">Dev.<br>PM.<br>Builder.</h2>
-      <p>I'm Dave a final-year Software Engineering student at Babcock University, Nigeria. I sit at the intersection of <strong>engineering, product thinking, and execution</strong>.</p>
+      <p>I'm Dave — a final-year Software Engineering student at Babcock University, Nigeria. I sit at the intersection of <strong>engineering, product thinking, and execution</strong>.</p>
       <p>On the technical side: frontend development with Next.js and React Native, backends with Firebase and Supabase. On the strategy side: product management, technical documentation, and shipping ideas from zero to real users.</p>
       <div class="about-tags">
         <span class="tag highlight">Frontend Dev</span>
@@ -279,17 +363,16 @@
   </div>
 </section>
 
+<!-- WORK -->
 <section id="work" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="section-label reveal">Work</div>
   <h2 class="section-title reveal">Selected projects.</h2>
   <div class="projects-grid">
-
-
- <div class="project-card featured reveal">
+    <div class="project-card featured reveal">
       <div>
         <div class="project-index">01 · Featured</div>
         <div class="project-name">kair<span>0</span></div>
-        <p class="project-desc">AI-powered market intelligence for retail forex traders. Delivers structured news-triggered bias reports market direction, bias, expected timeframe via X and Telegram. Built end-to-end: brand identity, product architecture, landing page, and audience distribution strategy.</p>
+        <p class="project-desc">AI-powered market intelligence for retail forex traders. Delivers structured news-triggered bias reports — market direction, bias, expected timeframe — via X and Telegram. Built end-to-end: brand identity, product architecture, landing page, and audience distribution strategy.</p>
         <div class="project-meta">
           <span class="project-tag live">In Progress</span>
           <span class="project-tag">AI</span>
@@ -297,26 +380,25 @@
           <span class="project-tag">Next.js</span>
           <span class="project-tag">X · Telegram</span>
         </div>
+        <a href="https://kair0.vercel.app/" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem;">Visit kair0 →</a>
       </div>
       <div class="project-visual">
         <div class="grid-bg"></div>
         <div class="kairo-badge">k0</div>
       </div>
-<a href="https://kair0.vercel.app/" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem;">Visit kair0 →</a>
     </div>
 
     <div class="project-card reveal reveal-delay-1">
       <div class="project-index">02 · Mobile App</div>
       <div class="project-name">Meta<span>Cal</span></div>
-      <p class="project-desc">Mobile calorie and nutrition tracker. Users log meals manually or via AI-assisted image recognition. Calculates personalised calorie targets, tracks progress visually, and includes a database of local African foods making it actually relevant for users in the region.</p>
+      <p class="project-desc">Mobile calorie and nutrition tracker. Users log meals manually or via AI-assisted image recognition. Calculates personalised calorie targets, tracks progress visually, and includes a database of local African foods — making it actually relevant for users in the region.</p>
       <div class="project-meta">
         <span class="project-tag">React Native</span>
         <span class="project-tag">Firebase</span>
-        <span class="project-tag">AI Vision</span>
+        <span class="project-tag">OpenAI</span>
         <span class="project-tag">Mobile</span>
       </div>
-
-<a href="YOUR_METACAL_LINK_HERE" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem;">View MetaCal →</a>
+      <a href="YOUR_METACAL_LINK_HERE" target="_blank" class="btn btn-primary" style="margin-top:1.25rem; font-size:11px; padding:0.6rem 1.2rem; display:inline-flex;">View MetaCal →</a>
     </div>
 
     <div class="project-card reveal reveal-delay-2" style="border-color: rgba(110,181,255,0.08);">
@@ -325,42 +407,87 @@
         <div class="grid-bg-blue"></div>
         <div class="metacal-badge">MetaCal</div>
       </div>
-      <p class="project-desc" style="font-size:11px; color:var(--muted);">The African food database angle is the product's core differentiator — no generic Western calorie app gets this right.</p>
+      <p class="project-desc" style="font-size:11px; color:var(--muted);">The African food database is the product's core differentiator — no generic Western calorie app gets this right.</p>
       <div class="project-meta">
         <span class="project-tag ship">React Native</span>
-        <span class="project-tag ship">Supabase</span>
+        <span class="project-tag ship">Firebase</span>
       </div>
     </div>
 
-    <div class="project-card misc-builds reveal reveal-delay-3" style="grid-column: 1 / -1;">
+    <div class="project-card misc-builds reveal reveal-delay-3">
       <div class="project-index">03 · Misc Builds</div>
       <div class="project-name" style="font-size:1rem; color:var(--muted); font-family:'DM Mono', monospace; font-weight:400;">Exploratory projects — HTML, CSS & JS</div>
       <div class="misc-inner">
-        <span class="misc-chip">Weather App</span>
-        <span class="misc-chip">Movie & Anime Searcher</span>
-        <span class="misc-chip">Crypto Price Tracker</span>
+        <span class="misc-chip">SkyCast — Weather App</span>
+        <span class="misc-chip">Genrify — Movie & Anime</span>
+        <span class="misc-chip">CryptoPulse — Crypto Tracker</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITING -->
+<section id="writing">
+  <div class="section-label reveal">Writing</div>
+  <h2 class="section-title reveal">Technical docs &<br>product writing.</h2>
+  <div class="writing-grid">
+
+    <div class="writing-card reveal">
+      <div>
+        <div class="writing-type">User Guide · Feature Documentation</div>
+        <div class="writing-title">SWOT Feature — 390 Work</div>
+        <p class="writing-excerpt">End-to-end documentation for the SWOT analysis feature on the 390 Work platform. Covers use cases, step-by-step workflows, folder management, troubleshooting, and FAQs for business users on the Grow and Scale plans.</p>
+      </div>
+      <div class="writing-footer">
+        <span class="writing-source">390 Technologies</span>
+        <button class="writing-read-btn" onclick="openModal('swot')">Read →</button>
+      </div>
+    </div>
+
+    <div class="writing-card reveal reveal-delay-1">
+      <div>
+        <div class="writing-type">User Guide · Feature Documentation</div>
+        <div class="writing-title">Inventory Management — 390 Work</div>
+        <p class="writing-excerpt">Documentation for the Inventory module on 390 Work. Covers stock count, stock value tracking, and breakdown reports for product movement. Includes troubleshooting and best practices for business operations teams.</p>
+      </div>
+      <div class="writing-footer">
+        <span class="writing-source">390 Technologies</span>
+        <button class="writing-read-btn" onclick="openModal('inventory')">Read →</button>
+      </div>
+    </div>
+
+    <div class="writing-card reveal reveal-delay-2">
+      <div>
+        <div class="writing-type">System Overview · Product Documentation</div>
+        <div class="writing-title">kair0 — System Overview</div>
+        <p class="writing-excerpt">Technical and product overview of kair0's four-stage pipeline: news monitoring, AI analysis, report generation, and distribution. Covers key design decisions and the reasoning behind the product's structure.</p>
+      </div>
+      <div class="writing-footer">
+        <span class="writing-source">Independent — kair0</span>
+        <button class="writing-read-btn" onclick="openModal('kair0')">Read →</button>
       </div>
     </div>
 
   </div>
 </section>
 
-<section id="experience">
+<!-- EXPERIENCE -->
+<section id="experience" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="section-label reveal">Experience</div>
   <h2 class="section-title reveal">Where I've been.</h2>
   <div class="exp-list">
     <div class="exp-item reveal">
       <div class="exp-period">2025 — Present</div>
       <div class="exp-role">Founder & Product Builder</div>
-      <div class="exp-company">Kair0 — AI Market Intelligence</div>
+      <div class="exp-company">kair0 — AI Market Intelligence</div>
       <div class="exp-desc">Full ownership of a product from zero: brand identity, architecture, frontend, landing page, and growth strategy. Building in public on X to validate and grow the user base before monetisation.</div>
     </div>
     <div class="exp-item reveal reveal-delay-1">
-      <div class="exp-period">Jan 2025 - June 2025</div>
+      <div class="exp-period">Jan 2025 — Jun 2025</div>
       <div class="exp-role">Frontend Developer & Technical Writer</div>
       <div class="exp-company">390 Technologies</div>
       <div class="exp-desc">Shipped production UI components with Next.js, JavaScript, and Git. Also produced technical documentation and product documentation for internal and external audiences — a less common combo that sharpens both how you build and how you communicate what you build.</div>
-      <span class="exp-badge">PMI Project Management Badge</span>
+      <span class="exp-badge">PMI Kickoff: Predictive & Agile PM</span>
     </div>
     <div class="exp-item reveal reveal-delay-2">
       <div class="exp-period">2022 — Present</div>
@@ -371,7 +498,8 @@
   </div>
 </section>
 
-<section id="contact" style="background: var(--surface); border-top: 1px solid var(--border);">
+<!-- CONTACT -->
+<section id="contact" style="background: var(--bg); border-top: 1px solid var(--border);">
   <div class="contact-inner">
     <div class="contact-left reveal">
       <div class="section-label">Contact</div>
@@ -381,17 +509,17 @@
       <a href="mailto:timilehind5@gmail.com" class="btn btn-primary">Send a message →</a>
     </div>
     <div class="contact-links reveal reveal-delay-1">
-      <a href="https://x.com/dvx_him" class="contact-link">
+      <a href="https://x.com/dvx_him" target="_blank" class="contact-link">
         <span class="link-name">X / Twitter</span>
         <span class="link-handle">@dvx_him</span>
         <span class="arrow">→</span>
       </a>
-      <a href="https://github.com/daves-impact" class="contact-link">
+      <a href="https://github.com/daves-impact" target="_blank" class="contact-link">
         <span class="link-name">GitHub</span>
-        <span class="link-handle">github.com/daves_impact</span>
+        <span class="link-handle">github.com/daves-impact</span>
         <span class="arrow">→</span>
       </a>
-      <a href="https://www.linkedin.com/in/david-oladipo-4a6862288?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="contact-link">
+      <a href="https://www.linkedin.com/in/david-oladipo-4a6862288" target="_blank" class="contact-link">
         <span class="link-name">LinkedIn</span>
         <span class="link-handle">linkedin.com/in/david-oladipo</span>
         <span class="arrow">→</span>
@@ -406,26 +534,210 @@
 </footer>
 
 <script>
+  // CURSOR
   const cursor = document.getElementById('cursor');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
   });
+
+  // SCROLL REVEAL
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   reveals.forEach(el => io.observe(el));
+
+  // SMOOTH SCROLL
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
       if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
     });
   });
-  document.querySelectorAll('.project-card').forEach(card => {
+
+  // CURSOR EXPAND
+  document.querySelectorAll('.project-card, .writing-card').forEach(card => {
     card.addEventListener('mouseenter', () => { cursor.style.width = '40px'; cursor.style.height = '40px'; });
     card.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; });
   });
+
+  // MODAL CONTENT
+  const docs = {
+    swot: {
+      type: 'User Guide · Feature Documentation',
+      title: 'SWOT Feature — 390 Work',
+      body: `
+        <p class="modal-note">This document is updated regularly with the latest information on how to use the SWOT feature. The SWOT feature on 390 Work is available to businesses on the Grow and Scale plans.</p>
+        <div class="modal-toc">
+          <p>Table of Contents</p>
+          <ol>
+            <li>Common Use Cases</li><li>Accessing the SWOT Feature</li><li>Creating a SWOT Analysis</li>
+            <li>Managing SWOT Folders</li><li>Benefits</li><li>Best Practices</li>
+            <li>Troubleshooting</li><li>Frequently Asked Questions</li><li>Conclusion</li>
+          </ol>
+        </div>
+        <h3>1. Common Use Cases</h3>
+        <ul>
+          <li><strong>Strategic Planning:</strong> Identify internal strengths and weaknesses while analyzing external opportunities and threats for business growth.</li>
+          <li><strong>Project Evaluation:</strong> Assess potential risks and advantages before launching new projects.</li>
+          <li><strong>Competitor Analysis:</strong> Compare strengths and weaknesses against competitors to refine business strategies.</li>
+          <li><strong>Performance Review:</strong> Use SWOT to evaluate teams, departments, or individual performance over time.</li>
+        </ul>
+        <h3>2. Accessing the SWOT Feature</h3>
+        <ol>
+          <li><strong>Locate the Main Menu:</strong> On the left sidebar of your dashboard, under the STRATEGY module.</li>
+          <li><strong>Select SWOT:</strong> Click the "SWOT" tab to enter the SWOT section.</li>
+        </ol>
+        <h3>3. Creating a SWOT Analysis</h3>
+        <ol>
+          <li>Click the "Create SWOT" button.</li>
+          <li>A form will appear requesting: Title, Category, Strengths, Weaknesses, Opportunities, and Threats.</li>
+          <li>Click "Save SWOT" to store the analysis in the system.</li>
+        </ol>
+        <h3>4. Managing SWOT Folders</h3>
+        <p>The SWOT Folders section organizes all SWOT analyses by type. Each folder represents a category (Business, Product, Market, Competitor). Click on a folder to view all analyses stored under that category.</p>
+        <h3>5. Benefits</h3>
+        <ul>
+          <li><strong>Organized Decision-Making:</strong> Streamlines internal and external evaluations for better planning.</li>
+          <li><strong>Improved Risk Assessment:</strong> Helps businesses anticipate and mitigate risks effectively.</li>
+          <li><strong>Strategic Growth:</strong> Enhances long-term planning by identifying potential opportunities.</li>
+          <li><strong>Centralized Data Storage:</strong> All SWOT analyses are accessible in a structured manner.</li>
+        </ul>
+        <h3>6. Best Practices</h3>
+        <ul>
+          <li>Regularly update SWOT analyses to keep data current.</li>
+          <li>Use SWOT Folders to organize analyses by type for easy access.</li>
+          <li>Collaborate with teams to gain diverse insights.</li>
+          <li>Compare past and present data to track business progress over time.</li>
+        </ul>
+        <h3>7. Troubleshooting</h3>
+        <p><strong>Issue: Unable to create a SWOT analysis</strong></p>
+        <ul>
+          <li>Ensure all required fields are filled before saving.</li>
+          <li>Refresh the page and try again.</li>
+          <li>Contact 390 Technologies Support if the issue persists.</li>
+        </ul>
+        <h3>8. Frequently Asked Questions</h3>
+        <ul>
+          <li><strong>Can I edit a SWOT analysis after saving?</strong> Yes — select it and click "Edit."</li>
+          <li><strong>Can I delete a SWOT analysis?</strong> Yes, but deleted SWOTs cannot be recovered.</li>
+          <li><strong>How do I search for a SWOT analysis?</strong> Use the search bar in the SWOT section.</li>
+        </ul>
+        <h3>9. Conclusion</h3>
+        <p>The SWOT feature on 390 Work is a powerful tool for businesses to analyze strengths, weaknesses, opportunities, and threats in a structured manner. With SWOT Folders and organized data storage, businesses can effectively plan, track, and improve strategies for long-term success.</p>
+      `
+    },
+    inventory: {
+      type: 'User Guide · Feature Documentation',
+      title: 'Inventory Management — 390 Work',
+      body: `
+        <p class="modal-note">Efficiently track, manage, and optimize inventory for seamless business operations. Available to businesses on the Grow and Scale plans.</p>
+        <div class="modal-toc">
+          <p>Table of Contents</p>
+          <ol>
+            <li>Common Use Cases</li><li>Accessing the Inventory Feature</li><li>Managing Inventory</li>
+            <li>Benefits</li><li>Best Practices</li><li>Troubleshooting</li>
+            <li>Frequently Asked Questions</li><li>Conclusion</li>
+          </ol>
+        </div>
+        <h3>1. Common Use Cases</h3>
+        <ul>
+          <li><strong>Stock Control:</strong> Keep an updated record of all products and their availability.</li>
+          <li><strong>Financial Tracking:</strong> Monitor the value of inventory in real-time.</li>
+          <li><strong>Sales & Loss Analysis:</strong> Understand product movement by tracking sales, removals, and transfers.</li>
+        </ul>
+        <h3>2. Accessing the Inventory Feature</h3>
+        <ol>
+          <li><strong>Locate Main Menu:</strong> On the left sidebar of your dashboard, under the Inventory module.</li>
+          <li><strong>Select Inventory:</strong> Click the "Inventory" tab to enter the Inventory section.</li>
+        </ol>
+        <h3>3. Managing Inventory</h3>
+        <p>Inventory is divided into three main sections:</p>
+        <ul>
+          <li><strong>Count:</strong> Displays all products and their quantities. Allows searching for specific products.</li>
+          <li><strong>Stock Value:</strong> Shows all products, their quantities, and their current total value.</li>
+          <li><strong>Breakdown:</strong> Provides a detailed view of inventory movements including products added, sold, removed, and transferred. Sortable by days, weeks, or months.</li>
+        </ul>
+        <h3>4. Benefits</h3>
+        <ul>
+          <li><strong>Improved Accuracy:</strong> Reduce errors by tracking product counts in real time.</li>
+          <li><strong>Better Decision-Making:</strong> Gain insights into stock levels and financial value.</li>
+          <li><strong>Optimized Restocking:</strong> Plan replenishments based on sales trends.</li>
+          <li><strong>Detailed Transaction Tracking:</strong> Monitor product movements for better accountability.</li>
+        </ul>
+        <h3>5. Best Practices</h3>
+        <ul>
+          <li>Keep stock records accurate by updating changes promptly.</li>
+          <li>Conduct routine checks to validate stock levels.</li>
+          <li>Use Breakdown reports to optimize inventory management.</li>
+        </ul>
+        <h3>6. Troubleshooting</h3>
+        <p><strong>Issue: Discrepancies in Stock Count</strong></p>
+        <ul>
+          <li>Double-check recent transactions for unrecorded changes.</li>
+          <li>Refresh the system or re-sync inventory data.</li>
+          <li>Contact support if the issue persists.</li>
+        </ul>
+        <h3>7. Frequently Asked Questions</h3>
+        <ul>
+          <li><strong>Can I edit stock levels manually?</strong> Yes — adjustments can be made in the Inventory tab under Count.</li>
+          <li><strong>How do I sort stock movement history?</strong> Use the Breakdown tab to filter by days, weeks, or months.</li>
+          <li><strong>What happens if I remove a product?</strong> Removed products no longer appear in active inventory but remain in transaction history.</li>
+        </ul>
+        <h3>8. Conclusion</h3>
+        <p>The Inventory section on 390 Work provides businesses with a structured way to track and manage their stock efficiently. By offering detailed insights into stock levels, financial value, and movement breakdowns, businesses can optimize operations, reduce losses, and ensure smooth product availability.</p>
+      `
+    },
+    kair0: {
+      type: 'System Overview · Product Documentation',
+      title: 'kair0 — System Overview',
+      body: `
+        <p class="modal-note">Document Type: Product Documentation — System Overview &nbsp;|&nbsp; Version: 1.0 &nbsp;|&nbsp; Status: Living document</p>
+        <h3>What is kair0?</h3>
+        <p>kair0 is an AI-powered market intelligence tool built for retail forex traders. It monitors global financial news in real time, analyzes the potential market impact of high-impact events, and delivers structured bias reports directly to traders via X (Twitter) and Telegram.</p>
+        <p>The goal: give retail traders the kind of structured, news-driven market context that institutional traders take for granted — without requiring them to manually sift through news feeds, economic calendars, or analyst reports.</p>
+        <h3>The Problem kair0 Solves</h3>
+        <p>Retail forex traders face a consistent challenge: high-impact news events move markets fast, but interpreting how a news event affects a specific currency pair requires macro analysis most retail traders don't have time for. The result is that traders either ignore the news and get caught off-guard, or consume too much information and hit analysis paralysis.</p>
+        <p>kair0 sits between the raw news and the trader's decision — processing the information and delivering a clean, actionable bias signal.</p>
+        <h3>System Pipeline</h3>
+        <ul>
+          <li><strong>Stage 1 — News Monitoring:</strong> kair0 monitors financial news sources for high-impact events: central bank decisions, CPI/PPI data, NFP releases, GDP data, and geopolitical developments. News is filtered by relevance — only events with a credible likelihood of market impact enter the pipeline.</li>
+          <li><strong>Stage 2 — AI Analysis:</strong> Filtered events are passed to the AI analysis layer (OpenAI GPT). The model produces a structured assessment covering affected markets, directional bias (bullish/bearish), expected timeframe (intraday/swing/longer-term), and confidence level.</li>
+          <li><strong>Stage 3 — Report Generation:</strong> AI output is formatted into a standardized bias report with consistent structure: event, affected markets, bias direction, timeframe, macro reasoning, and a DYOR disclaimer.</li>
+          <li><strong>Stage 4 — Distribution:</strong> Reports are published to X (Twitter) for public reach and Telegram for a dedicated trader community. Distribution is timed around news release windows to maximize relevance.</li>
+        </ul>
+        <h3>Key Design Decisions</h3>
+        <ul>
+          <li><strong>Why X and Telegram?</strong> Retail forex traders are already on both platforms. Meeting users where they are reduces friction to zero — no app to download, no account to create.</li>
+          <li><strong>Why a structured report format?</strong> Consistency builds trust. When traders see the same format every time, they can scan a report in seconds. Unpredictable formatting creates cognitive load.</li>
+          <li><strong>Why include a DYOR disclaimer?</strong> kair0 provides market intelligence, not financial advice. The disclaimer frames kair0 correctly as a decision-support tool, not a trading system.</li>
+        </ul>
+        <h3>Current Status</h3>
+        <p>kair0 is in active development. The core pipeline is being built and tested. A waitlist landing page is live at <a href="https://kair0.vercel.app" target="_blank" style="color:var(--accent);">kair0.vercel.app</a> for traders who want early access.</p>
+      `
+    }
+  };
+
+  function openModal(key) {
+    const doc = docs[key];
+    document.getElementById('modalType').textContent = doc.type;
+    document.getElementById('modalTitle').textContent = doc.title;
+    document.getElementById('modalBody').innerHTML = doc.body;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
