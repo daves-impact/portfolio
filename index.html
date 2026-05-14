@@ -217,6 +217,72 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
   .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s, width 0.2s, height 0.2s; mix-blend-mode: difference; }
+
+  /* HAMBURGER */
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); transition: all 0.3s; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* TABLET 768px */
+  @media (max-width: 768px) {
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 57px; left: 0; right: 0;
+      background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
+      flex-direction: column; gap: 0; padding: 0;
+      border-bottom: 1px solid var(--border);
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    }
+    .nav-links.open { max-height: 400px; }
+    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links a { display: block; padding: 1rem 2rem; font-size: 13px; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2rem; min-height: auto; }
+    .hero-visual { display: none; }
+    .hero-title { font-size: clamp(2.4rem, 8vw, 3.5rem); }
+    .hero-bio { font-size: 13px; max-width: 100%; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: 1; grid-template-columns: 1fr; }
+    .project-card.featured .project-visual { display: none; }
+    .misc-builds { grid-column: 1; }
+    .writing-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    .modal-overlay { padding: 1rem; align-items: flex-end; }
+    .modal { max-height: 92vh; }
+    .modal-header { padding: 1.25rem; }
+    .modal-body { padding: 1.25rem; }
+    .cursor { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .writing-card-featured { grid-column: 1 !important; grid-template-columns: 1fr !important; }
+  }
+
+  /* MOBILE 480px */
+  @media (max-width: 480px) {
+    nav { padding: 1rem 1.25rem; }
+    section { padding: 3rem 1.25rem; }
+    .hero { padding: 5rem 1.25rem 2.5rem; }
+    .hero-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .hero-cta { flex-direction: column; }
+    .hero-cta .btn { width: 100%; justify-content: center; }
+    .section-title { font-size: clamp(1.8rem, 7vw, 2.4rem); margin-bottom: 2rem; }
+    .project-card { padding: 1.5rem; }
+    .writing-card { padding: 1.25rem; }
+    .contact-left .big-cta { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+    .contact-links { gap: 0.75rem; }
+    .contact-link { padding: 0.85rem 1rem; }
+    .contact-link .link-handle { display: none; }
+    .exp-list { padding-left: 1.5rem; }
+    .exp-item::before { left: -1.9rem; }
+    .modal-header-left .modal-title { font-size: 1rem; }
+    .stack-item { flex-wrap: wrap; gap: 4px; }
+    footer { padding: 1.5rem 1.25rem; }
+  }
 </style>
 </head>
 <body>
@@ -239,7 +305,10 @@
 
 <nav>
   <div class="nav-logo">Dave.</div>
-  <ul class="nav-links">
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
     <li><a href="#writing">Writing</a></li>
@@ -468,7 +537,7 @@
       </div>
     </div>
 
-    <div class="writing-card reveal" style="border-color: rgba(184,255,87,0.12); grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+    <div class="writing-card reveal" class="writing-card-featured" style="border-color: rgba(184,255,87,0.12); grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
       <div>
         <div class="writing-type">Case Study · Building in Public</div>
         <div class="writing-title" style="font-size: 1.3rem;">kair0 — From Problem to Product</div>
@@ -579,6 +648,20 @@
   });
 
   // CURSOR EXPAND
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
   document.querySelectorAll('.project-card, .writing-card').forEach(card => {
     card.addEventListener('mouseenter', () => { cursor.style.width = '40px'; cursor.style.height = '40px'; });
     card.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; });
